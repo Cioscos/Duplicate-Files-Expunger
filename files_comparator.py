@@ -1,8 +1,21 @@
+'''
+written by Cioscos
+
+script takes 2 or 3 arguments:
+--dir1
+--dir2
+--force-extension
+
+With dir1 you show it first directory, dir2 second directory, and those two are mandatory.
+By default it only compares file names (so asd.png and asd.jpg are considered as "the same file"), but you can use --force-extension to force it to check extension as well
+and instead of deleting files, it creates a new folder called "trash_files" and moves the files there so you can still go there and check if it "deleted" something that you wanted to keep
+'''
 import os
 import shutil
 from pathlib import Path
 import re
 import argparse
+import textwrap
 from tqdm import tqdm
 
 def alphaNumOrder(string):
@@ -21,7 +34,21 @@ def make_dataset(dir: str) -> list[Path]:
     return files
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        prog='Files comparator',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=textwrap.dedent('''\
+written by Cioscos
+
+script takes 2 or 3 arguments:
+--dir1
+--dir2
+--force-extension
+
+With dir1 you show it first directory, dir2 second directory, and those two are mandatory.
+By default it only compares file names (so asd.png and asd.jpg are considered as "the same file"), but you can use --force-extension to force it to check extension as well
+and instead of deleting files, it creates a new folder called "trash_files" and moves the files there so you can still go there and check if it "deleted" something that you wanted to keep''')
+    )
     parser.add_argument('--dir1', type=str, dest='dir_1', required=True, default='directory_1', help='First folder with files')
     parser.add_argument('--dir2', type=str, dest='dir_2', required=True, default='directory_2', help='Second folder with files')
     parser.add_argument('--trash-dir', type=str, dest='trash_dir', default='trash_files', help='Folder where deleted files will go')
