@@ -77,7 +77,7 @@ and instead of deleting files, it creates a new folder called "trash_files" and 
             if name == (path.name if args.force_extension else path.stem):
                 files_to_delete.append(path)
     
-    for path in tqdm(files_to_delete, desc='Copying files'):
+    for path in tqdm(files_to_delete, desc='Moving files'):
         shutil.move(path, args.trash_dir)
 
 
