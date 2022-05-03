@@ -1,16 +1,25 @@
 '''
 written by Cioscos
 
-script takes 2 or 3 arguments:
+script takes different arguments:
 --dir1
 --dir2
---force-extension
+--trash-dir or -t
+--force-extension or -f
+--separate-trash or -s
+--check-sha256 or -c
+
 
 With dir1 you show it first directory, dir2 second directory, and those two are mandatory.
 By default it only compares file names (so asd.png and asd.jpg are considered as "the same file"), but you can use --force-extension to force it to check extension as well
-and instead of deleting files, it creates a new folder called "trash_files" and moves the files there so you can still go there and check if it "deleted" something that you wanted to keep
+and instead of deleting files, it creates a new folder called "trash_files" by default or you can give a custom name to that folder using -t argument and moves the files there
+so you can still go there and check if it "deleted" something that you wanted to keep.
+If you want to know from where moved files come from, you can use -s arg to create 2 trash folders according to the original position of the files.
+In addition, using the -c argument it is possible after moving the files to their respective folders to check if the hash of the remaining files matches. 
+If it matches, then the files will remain in the folders, otherwise they will be moved to a new folder called "different for hash".
+If the -s argument is used, then 2 different folders will also be created for the hash check.
 '''
-from ast import arg
+
 import os
 import shutil
 import hashlib
@@ -49,8 +58,6 @@ def main():
         prog='Files comparator',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=textwrap.dedent('''\
-written by Cioscos
-
 script takes different arguments:
 --dir1
 --dir2
@@ -66,7 +73,7 @@ and instead of deleting files, it creates a new folder called "trash_files" by d
 so you can still go there and check if it "deleted" something that you wanted to keep.
 If you want to know from where moved files come from, you can use -s arg to create 2 trash folders according to the original position of the files.
 In addition, using the -c argument it is possible after moving the files to their respective folders to check if the hash of the remaining files matches. 
-If it matches, then the files will remain in the folders, otherwise they will be moved to a new folder called "different for hash <source_folder_name>". 
+If it matches, then the files will remain in the folders, otherwise they will be moved to a new folder called "different for hash".
 If the -s argument is used, then 2 different folders will also be created for the hash check.''')
     )
     parser.add_argument('--dir1', type=str, dest='dir_1', required=True, default='directory_1', help='First folder with files')
