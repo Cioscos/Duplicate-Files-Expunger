@@ -21,6 +21,7 @@ If the -s argument is used, then 2 different folders will also be created for th
 '''
 
 import os
+import sys
 import shutil
 import hashlib
 from pathlib import Path
@@ -54,6 +55,9 @@ def sha256sum(filename: Path) -> str:
     return h.hexdigest()
 
 def main():
+    if sys.version_info[0] < 3 or (sys.version_info[0] == 3 and sys.version_info[1] < 10):
+        raise Exception("This program requires at least Python 3.10")
+
     parser = argparse.ArgumentParser(
         prog='Files comparator',
         formatter_class=argparse.RawDescriptionHelpFormatter,
